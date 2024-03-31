@@ -59,12 +59,12 @@ const FlavanoidManagement = () => {
 
 
     useEffect(() => {
-        const groupedData = groupData(wineData)
+        const groupedData = groupData(wineData, "flavanoids")
+        console.log(groupedData, 'DATA in group')
         setGroupDataArray(groupedData)
     }, [])
 
-    return
-    (
+    return (
         <Listing mean={Object.values(getMean)} median={Object.values(getMedian)} mode={Object.values(getMode)} />
     )
 

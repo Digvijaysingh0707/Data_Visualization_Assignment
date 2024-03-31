@@ -21,7 +21,6 @@ const GammaManagement = () => {
     }
 
     const getMean = (data) => {
-        console.log(data, 'DATA')
         const meanValues = {};
         for (const alcohol in data) {
             const values = data[alcohol];
@@ -69,7 +68,6 @@ const GammaManagement = () => {
     useEffect(() => {
         const groupedData = groupData(wineData)
         const gammaData = getGamma(groupedData)
-        console.log(gammaData, 'gammaData')
         if (Object.keys(gammaData)?.length > 0) {
             getMean(gammaData)
             getMedian(gammaData)
@@ -77,7 +75,6 @@ const GammaManagement = () => {
         }
     }, [])
 
-    console.log(gammaMean, gammaMode, 'GAMMA MODE')
 
     return (
         <>{gammaMean && Object.keys(gammaMean)?.length > 0 &&
