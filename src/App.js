@@ -1,5 +1,4 @@
-import { useState } from "react";
-import FlavanoidManagement from "./components/FlavanoidManagement";
+import FlavanoidManagement from "./components/FlavonoidManagement";
 import GammaManagement from "./components/GammaManagement";
 
 const App = () => {

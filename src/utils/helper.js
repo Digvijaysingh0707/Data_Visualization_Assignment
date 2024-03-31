@@ -5,7 +5,7 @@ export const groupData = (data, type) => {
     if (!groupedData[alcohol]) {
       groupedData[alcohol] = [];
     } else {
-      if (type === "flavanoids") {
+      if (type === "flavonoids") {
         groupedData[alcohol].push(parseFloat(entry?.Flavanoids));
       } else if (type === "gamma") {
         groupedData[alcohol].push({
