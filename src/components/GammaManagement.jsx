@@ -1,85 +1,35 @@
 import { useEffect, useState } from "react"
-import { groupData } from "../utils/helper"
+import { getGamma, groupData, getMedian, getMode, getMean } from "../utils/helper"
 import { wineData } from "../constants/wineData"
-import GammaListing from "./GammaListing"
+import Listing from "./Listing"
 
 const GammaManagement = () => {
     const [gammaMean, setGammaMean] = useState()
     const [gammaMedian, setGammaMedian] = useState()
     const [gammaMode, setGammaMode] = useState()
 
-    const getGamma = (data) => {
-        const gammas = {};
-        for (const category in data) {
-            gammas[category] = [];
-            data[category].forEach(entry => {
-                const gamma = (parseFloat(entry?.Ash) * entry?.Hue) / entry?.Magnesium;
-                gammas[category].push(gamma);
-            });
-        }
-        return gammas
-    }
-
-    const getMean = (data) => {
-        const meanValues = {};
-        for (const alcohol in data) {
-            const values = data[alcohol];
-            const sum = values?.reduce((acc, val) => acc + parseFloat(val), 0);
-            const mean = (sum / values?.length)?.toFixed(3);
-            meanValues[alcohol] = mean;
-        }
-        setGammaMean(meanValues)
-    }
-
-    const getMedian = (data) => {
-        const medianValues = {};
-        for (const alcohol in data) {
-            const values = data[alcohol];
-            const sortedValues = values.sort((a, b) => a - b);
-            const mid = Math.floor(sortedValues.length / 2);
-            const median =
-                sortedValues.length % 2 !== 0
-                    ? sortedValues[mid]
-                    : (sortedValues[mid - 1] + sortedValues[mid]) / 2;
-            medianValues[alcohol] = median;
-        }
-        setGammaMedian(medianValues)
-    }
-
-    const getMode = (data) => {
-        const modeValues = {};
-        for (const alcohol in data) {
-            const values = data[alcohol];
-            const modeMap = {};
-            let maxCount = 0;
-            let mode;
-            values.forEach(val => {
-                modeMap[val] = (modeMap[val] || 0) + 1;
-                if (modeMap[val] > maxCount) {
-                    maxCount = modeMap[val];
-                    mode = val;
-                }
-            });
-            modeValues[alcohol] = mode;
-        }
-        setGammaMode(modeValues)
-    }
-
     useEffect(() => {
-        const groupedData = groupData(wineData)
+        const groupedData = groupData(wineData, "gamma")
         const gammaData = getGamma(groupedData)
-        if (Object.keys(gammaData)?.length > 0) {
-            getMean(gammaData)
-            getMedian(gammaData)
-            getMode(gammaData)
+        if (gammaData && Object.values(gammaData)?.length > 0) {
+            const mean = getMean(gammaData)
+            const mode = getMode(gammaData)
+            const median = getMedian(gammaData)
+            console.log(mean, 'MEAN')
+            setGammaMean(mean)
+            setGammaMode(mode)
+            setGammaMedian(median)
         }
     }, [])
 
 
+
     return (
-        <>{gammaMean && Object.keys(gammaMean)?.length > 0 &&
-            <GammaListing size={Object.keys(gammaMean)?.length} mean={Object.keys(gammaMean)} mode={Object.keys(gammaMode)} median={Object.keys(gammaMedian)} />
-        }
+        <>
+            <h2>Gamma Table</h2>
+            {gammaMean && Object.keys(gammaMean)?.length > 0 &&
+                <Listing type={"GAMMA"} mean={Object.values(gammaMean)} mode={Object.values(gammaMode)} median={Object.values(gammaMedian)} />
+            }
         </>
     )
 }

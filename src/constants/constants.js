@@ -1,1 +1,1 @@
-export const CLASSES = ["Flavonoids", "Gamma"];
+export const ALCOHOL_TYPE = { FLAVONOIDS: "Flavonoids", GAMMA: "Gamma" };

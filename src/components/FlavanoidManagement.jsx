@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { getMean, getMedian, getMode, groupData } from "../utils/helper"
 import { wineData } from "../constants/wineData";
-import Listing from "./FlavonoidsListing";
+import Listing from "./Listing";
 
 const FlavanoidManagement = () => {
     const [flavanoidMean, setFlavanoidMean] = useState()
@@ -21,11 +21,18 @@ const FlavanoidManagement = () => {
     }, [])
 
     return (
-        (
-            (flavanoidMean && Object.values(flavanoidMean)?.length > 0) &&
-            <Listing mean={Object.values(flavanoidMean)} median={Object.values(flavanoidMedian)} mode={Object.values(flavanoidMode)} />
-        )
-    )
+        <>
+            <h2>Flavanoid Table</h2>
+            {flavanoidMean && Object.values(flavanoidMean)?.length > 0 && (
+                <Listing
+                    type={"FLAVONOIDS"}
+                    mean={Object.values(flavanoidMean)}
+                    median={Object.values(flavanoidMedian)}
+                    mode={Object.values(flavanoidMode)}
+                />
+            )}
+        </>
+    );
 
 }
 

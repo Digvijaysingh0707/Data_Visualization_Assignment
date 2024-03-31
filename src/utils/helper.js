@@ -6,13 +6,13 @@ export const groupData = (data, type) => {
       groupedData[alcohol] = [];
     } else {
       if (type === "flavanoids") {
-        groupedData[alcohol].push(entry?.Flavanoids);
-      } else {
+        groupedData[alcohol].push(parseFloat(entry?.Flavanoids));
+      } else if (type === "gamma") {
         groupedData[alcohol].push({
-          Flavanoids: entry?.Flavanoids,
-          Hue: entry?.Hue,
-          Ash: entry?.Ash,
-          Magnesium: entry?.Magnesium,
+          Flavanoids: parseFloat(entry?.Flavanoids),
+          Hue: parseFloat(entry?.Hue),
+          Ash: parseFloat(entry?.Ash),
+          Magnesium: parseFloat(entry?.Magnesium),
         });
       }
     }
@@ -21,11 +21,12 @@ export const groupData = (data, type) => {
 };
 
 export const getMean = (alcoholList) => {
+  console.log(alcoholList, "ALCOHOL");
   const meanValues = {};
   for (const alcohol in alcoholList) {
     const values = alcoholList[alcohol];
-    const sum = values.reduce((acc, val) => acc + parseFloat(val), 0);
-    const mean = (sum / values.length).toFixed(3);
+    const sum = values.reduce((acc, val) => acc + val, 0);
+    const mean = sum / values.length;
     meanValues[alcohol] = mean;
   }
   return meanValues;
@@ -63,4 +64,17 @@ export const getMode = (alcoholList) => {
     modeValues[alcohol] = mode;
   }
   return modeValues;
+};
+
+export const getGamma = (alcoholList) => {
+  const gammas = {};
+  for (const category in alcoholList) {
+    gammas[category] = [];
+    alcoholList[category].forEach((entry) => {
+      const gamma = (entry?.Ash * entry?.Hue) / entry?.Magnesium;
+      gammas[category].push(gamma);
+    });
+  }
+  console.log(gammas, "GAMMAS");
+  return gammas;
 };
